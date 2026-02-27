@@ -1,4 +1,37 @@
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-html
+  namespace: dev
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head><title>IoT Playground</title></head>
+    <body style="font-family: Arial; text-align: center; padding: 50px;">
+      <h1 style="color: #0066cc;">Version 1</h1>
+      <p style="font-size: 20px;">Status: <span style="color: green;">OK</span></p>
+      <pre style="background: #f4f4f4; padding: 20px; border-radius: 5px;">{"status":"ok", "message": "v1"}</pre>
+      <p style="color: #666;">Change this to v2 in your Git repo to see GitOps in action!</p>
+    </body>
+    </html>
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-port-config
+  namespace: dev
+data:
+  default.conf: |
+    server {
+        listen 8888;
+        location / {
+            root   /usr/share/nginx/html;
+            index  index.html;
+        }
+    }
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,15 +48,21 @@ spec:
     metadata:
       labels:
         app: wil-playground
+        version: v1  # Change to v2 when updating
     spec:
       containers:
-      - name: wil-playground
-        # Change this tag from v1 to v2 to trigger automatic update
-        image: wil42/playground:v1
+      - name: nginx
+        # nginx supports ARM64 - change index.html ConfigMap to update version
+        image: nginx:1.25-alpine
         ports:
         - containerPort: 8888
           name: http
           protocol: TCP
+        volumeMounts:
+        - name: html
+          mountPath: /usr/share/nginx/html
+        - name: nginx-config
+          mountPath: /etc/nginx/conf.d
         resources:
           limits:
             memory: "128Mi"
@@ -35,11 +74,18 @@ spec:
           httpGet:
             path: /
             port: 8888
-          initialDelaySeconds: 10
+          initialDelaySeconds: 5
           periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /
             port: 8888
-          initialDelaySeconds: 5
+          initialDelaySeconds: 3
           periodSeconds: 5
+      volumes:
+      - name: html
+        configMap:
+          name: app-html
+      - name: nginx-config
+        configMap:
+          name: nginx-port-config
