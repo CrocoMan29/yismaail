@@ -7,15 +7,15 @@ metadata:
 data:
   index.html: |
     <!DOCTYPE html>
-    <html>
-    <head><title>IoT Playground</title></head>
-    <body style="font-family: Arial; text-align: center; padding: 50px;">
-      <h1 style="color: #0066cc;">Version 1</h1>
-      <p style="font-size: 20px;">Status: <span style="color: green;">OK</span></p>
-      <pre style="background: #f4f4f4; padding: 20px; border-radius: 5px;">{"status":"ok", "message": "v1"}</pre>
-      <p style="color: #666;">Change this to v2 in your Git repo to see GitOps in action!</p>
-    </body>
-    </html>
+       <html>
+       <head><title>IoT Playground</title></head>
+       <body style="font-family: Arial; text-align: center; padding: 50px; background: #f0f8ff; background: #f0f8ff;">
+         <h1 style="color: #cc0066;">Version 2</h1>
+         <p style="font-size: 20px;">Status: <span style="color: green;">OK</span></p>
+         <pre style="background: #e6f3ff; padding: 20px; border-radius: 5px;">{"status":"ok", "message": "v2"}</pre>
+         <p style="color: #666;">✅ GitOps Update Successful! Argo CD synced this automatically.</p>
+       </body>
+       </html>
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -48,7 +48,7 @@ spec:
     metadata:
       labels:
         app: wil-playground
-        version: v1  # Change to v2 when updating
+        version: v2  # Change to v2 when updating
     spec:
       containers:
       - name: nginx
