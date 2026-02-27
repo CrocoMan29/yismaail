@@ -9,7 +9,7 @@ data:
     <!DOCTYPE html>
        <html>
        <head><title>IoT Playground</title></head>
-       <body style="font-family: Arial; text-align: center; padding: 50px; background: #f0f8ff; background: #f0f8ff;">
+       <body style="font-family: Arial; text-align: center; padding: 50px; background: #f0f8ff; background: #f0f8ff; background: #f0f8ff;">
          <h1 style="color: #cc0066;">Version 2</h1>
          <p style="font-size: 20px;">Status: <span style="color: green;">OK</span></p>
          <pre style="background: #e6f3ff; padding: 20px; border-radius: 5px;">{"status":"ok", "message": "v2"}</pre>
